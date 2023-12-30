@@ -103,7 +103,7 @@ Game 100: 2 blue, 8 green, 12 red; 2 green, 13 red; 2 red, 4 green; 2 green, 7 r
 // remove ones that do not fit the criteria for objects
 // add up the IDs of the ones that do
 
-const numberOfGames = input.split("\n")
+const gamesArray = input.split("\n")
 let numberOfValidGames = []
 
 let reds = []
@@ -178,10 +178,39 @@ function filterOutImpossibleGames(gameInfo) {
     // const game = gameInfo.split(";")
 } 
 
-filterOutImpossibleGames(numberOfGames)
+// filterOutImpossibleGames(gamesArray)
 
 const answer = numberOfValidGames.reduce((accumulator, currentValue) => {
     return accumulator + currentValue
 }, 0)
 
-console.log({answer})
+// console.log({answer})
+reds = []
+blues = []
+greens = []
+let powerArray = []
+function getGamePower(gameInfo) {
+    gameInfo.map(x => {
+     const game = x.split(":")[1].trim()
+     let redSet = game.split(" red")
+     pushIntegersToColourSet(redSet, 'red')
+     let highestRed = Math.max(...reds.map(x => parseInt(x)))
+     let blueSet = game.split(" blue")
+     pushIntegersToColourSet(blueSet, 'blue')
+     let highestBlue = Math.max(...blues.map(x => parseInt(x)))
+     let greenSet = game.split(" green")
+     pushIntegersToColourSet(greenSet, 'green')
+     let highestGreen = Math.max(...greens.map(x => parseInt(x)))
+     powerArray.push(highestRed*highestBlue*highestGreen)
+     reds = []
+     blues = []
+     greens = []
+    })}
+
+getGamePower(gamesArray)
+
+const powerArraySum = powerArray.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue
+}, 0)
+
+console.log({powerArraySum})
